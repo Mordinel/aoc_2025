@@ -1,26 +1,30 @@
+use rayon::iter::{IntoParallelIterator, ParallelBridge, ParallelIterator};
+
 fn main() {
-    let input = std::io::stdin().lines()
-        .take(1)
+    let input = std::io::stdin()
+        .lines()
         .filter_map(Result::ok)
         .collect::<String>();
 
     let t = std::time::Instant::now();
-    let silver: u64 = parse(&input)
+    let silver: u64 = parse(&input).into_par_iter()
         .filter(is_invalid_silver)
         .sum();
     let took = t.elapsed();
     println!("Silver: {silver}, took: {took:?}");
 
     let t = std::time::Instant::now();
-    let gold: u64 = parse(&input)
+    let gold: u64 = parse(&input).into_par_iter()
         .filter(is_invalid_gold)
         .sum();
     let took = t.elapsed();
     println!("Gold: {gold}, took: {took:?}");
 }
 
-fn parse(input: &str) -> impl Iterator<Item=u64> {
-    input.split(',')
+fn parse(input: &str) -> impl ParallelIterator<Item=u64> {
+    input.trim()
+        .split(',')
+        .par_bridge()
         .filter_map(|range| range.split_once('-'))
         .filter_map(|(l, r)| Some((
             l.parse::<u64>().ok()?,
