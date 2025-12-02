@@ -4,15 +4,19 @@ fn main() {
         .filter_map(Result::ok)
         .collect::<String>();
 
+    let t = std::time::Instant::now();
     let silver: u64 = parse(&input)
         .filter(is_invalid_silver)
         .sum();
-    println!("Silver: {silver}");
+    let took = t.elapsed();
+    println!("Silver: {silver}, took: {took:?}");
 
+    let t = std::time::Instant::now();
     let gold: u64 = parse(&input)
         .filter(is_invalid_gold)
         .sum();
-    println!("Gold: {gold}");
+    let took = t.elapsed();
+    println!("Gold: {gold}, took: {took:?}");
 }
 
 fn parse(input: &str) -> impl Iterator<Item=u64> {
