@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["day_01", "day_01_simple", "day_02", "day_03", "day_04", "day_05"]
+members = ["day_01", "day_01_simple", "day_02", "day_03", "day_04", "day_05", "day_06"]
 
 [profile.release]
 opt-level = 3
